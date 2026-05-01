@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlalchemy import Text, text, ForeignKey, LargeBinary, UniqueConstraint
+from sqlalchemy import Text, text, ForeignKey, LargeBinary, UniqueConstraint, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 
 from tenant_flow.models.base import Base
@@ -18,9 +18,9 @@ class Event(Base):
   body_hash: Mapped[str] = mapped_column(Text, nullable=False)
   raw_body: Mapped[bytes] = mapped_column(LargeBinary, nullable=False)
   payload: Mapped[dict] = mapped_column(JSONB, nullable=False)
-  received_at: Mapped[datetime] = mapped_column(nullable=False, server_default=text("now()"))
+  received_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False, server_default=text("now()"))
   current_status: Mapped[str] = mapped_column(Text, nullable=False, server_default=text("'received'"))
-  last_attempted_at: Mapped[datetime | None] = mapped_column()
+  last_attempted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
   attempt_count: Mapped[int] = mapped_column(nullable=False, server_default=text("0"))
   
   __table_args__ = (
