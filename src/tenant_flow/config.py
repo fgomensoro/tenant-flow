@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     postgres_db: str
     postgres_port: int = 5432
     debug: bool = False
+    admin_token: str
 
     @property
     def database_url(self) -> str:

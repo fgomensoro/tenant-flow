@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 
 from tenant_flow.middleware.tenant_context import TenantContextMiddleware
-from tenant_flow.routers import tenants
+from tenant_flow.routers import admin, tenants
 
 app = FastAPI(title="tenant-flow")
 app.add_middleware(TenantContextMiddleware)
+app.include_router(admin.router)
 app.include_router(tenants.router)
 
 
